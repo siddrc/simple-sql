@@ -22,6 +22,8 @@
 
  Once the schema is in place: we will then make a REST-API to fill the database with data
 
+ I have used .env and moved all database credentials
+ and I have added .env file to .gitignore so that it does not get committed to GitHub
 
 **/
 
