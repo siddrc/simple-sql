@@ -1,30 +1,39 @@
 
 /**
 
- Design a school schema:
- -A school would have classes
- -Classes have teachers (teaching staff) 
- -Classes have students
- -Each Class has a Monitor ( Monitor is among the students) 
- -A school has a Principal
- -School also has practical-labs
- -School also has an amphi-theatre
- -Amphi-Theatre has a seating capacity, projector, operator etc.
- -School has a cleaning staff
- -School has a administrative staff
- -School has a management council or a board or mgmt staff
- -Students pay fees
- -Each fees paid has a associated receipt
- -School pays out salary as well
-
- Think of all the possible relations
- like Primary Key from which table would be referenced as a FK in which table etc.
-
- Once the schema is in place: we will then make a REST-API to fill the database with data
-
- I have used .env and moved all database credentials
- and I have added .env file to .gitignore so that it does not get committed to GitHub
-
 **/
 
+
+create table public.school(
+    id SERIAL Primary Key,
+    name varchar(50),
+    abbreviation varchar(10)
+);
+
+create table public.classes(
+    id SERIAL Primary Key,
+    name varchar(50),
+    school_id int,
+    foreign key (school_id) references school(id)
+);
+
+-- each school must have only one principle
+create type staff as enum('Administrative', 'Management', 'Cleaning', 'Teaching');
+create table public.school_staff(
+    id SERIAL Primary Key,
+    firstName varchar(50),
+    lastName varchar(50),
+    dateOfBirth timestamp,
+    school_id int,
+    staff_type staff,
+    foreign key (school_id) references school(id)
+)
+
+create table public.school_principle(
+    id SERIAL PRIMARY KEY,
+    school_id int unique, 
+    staff_id int,
+    foreign key (school_id) references school(id),
+    foreign key (staff_id) references school_staff(id)
+)
 
